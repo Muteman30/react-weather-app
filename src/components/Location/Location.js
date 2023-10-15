@@ -1,5 +1,5 @@
 import React from 'react';
-import {CircularProgress, Paper, Typography} from '@mui/material';
+import {CircularProgress, Paper} from '@mui/material';
 import Details from './Details';
  
 const styles = {

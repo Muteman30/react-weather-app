@@ -6,6 +6,7 @@ import SearchBar from '../components/SearchBar/SearchBar';
 import SearchOptions from '../components/SearchOptions/SearchOptions';
 import SearchOption from '../components/SearchOptions/SearchOption/SearchOption';
 import Location from "../components/Location/Location";
+import HistoryTable from "../components/HistoryTable/HistoryTable";
 
 const SearchPage = (props)=>{
     const [loadingLocation, setLoadingLocation] = useState(true);
@@ -63,7 +64,11 @@ const SearchPage = (props)=>{
             <Box>
                 {
                     locationHistory.length>0 && 
-                    <Location location={locationHistory[0]} loading={loadingLocation}/>
+                    <>
+                        <Location location={locationHistory[0]} loading={loadingLocation}/>
+                        <HistoryTable history={locationHistory}/>
+                    </>
+                    
                 }
             </Box>
         </Container>
