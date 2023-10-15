@@ -1,6 +1,6 @@
 import React from 'react';
 import {CircularProgress, Paper, Typography} from '@mui/material';
-import CurrentDetails from './CurrentDetails';
+import Details from './Details';
  
 const styles = {
     card:{
@@ -12,12 +12,11 @@ const Location = ({loading, location})=>{
 
     return(
         <Paper sx={styles.card} elevation={2}>
-            <Typography variant="h4">Current:</Typography>
             { 
                 loading || !location.current?
                 <CircularProgress/> : 
 
-                <CurrentDetails location={location.label} weather={location.current}/>
+                <Details location={location.label} current={location.current} forecast={location.forecast}/>
             }
         </Paper>
     )

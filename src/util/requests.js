@@ -17,7 +17,7 @@ export const getLocationWeather = (selectedLocation)=>{
     ]).then(results => ({
         ...selectedLocation,
         current: results[0].data,
-        forecast: results[1].data
+        forecast: results[1].data.list
     }))
 }
 
