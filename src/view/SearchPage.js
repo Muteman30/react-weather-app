@@ -1,21 +1,24 @@
 import React, {useState, useEffect} from 'react';
 import {useDebounce} from 'use-debounce';
 import { Container, Typography , Box} from '@mui/material';
-import {getLocations} from '../util/requests';
+import {getLocationWeather, getLocations} from '../util/requests';
 import SearchBar from '../components/SearchBar/SearchBar';
 import SearchOptions from '../components/SearchOptions/SearchOptions';
 import SearchOption from '../components/SearchOptions/SearchOption/SearchOption';
+import Location from "../components/Location/Location";
 
 const SearchPage = (props)=>{
+    const [loadingLocation, setLoadingLocation] = useState(true);
     const [searchValue, setSearchValue] = useState('');
     const [possibleLocations, setPossibleLocations] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState(null);
     const [debouncedSearch] = useDebounce(searchValue,1000);
+    const [locationHistory, setLocationHistory] = useState([]);
 
     useEffect(()=>{
         if(debouncedSearch){
             getLocations(debouncedSearch).then(results=>{
-                setPossibleLocations(results.data.map(location=>({
+                setPossibleLocations(results.map(location=>({
                     ...location,
                     label: `${location.name}, ${location.state}, ${location.country}`
                 })));
@@ -24,6 +27,16 @@ const SearchPage = (props)=>{
         return ()=>{}
     }, [debouncedSearch])
 
+    useEffect(()=>{
+        if(selectedLocation){
+            setLoadingLocation(true)
+            getLocationWeather(selectedLocation).then(result=>{
+                setLoadingLocation(false);
+                setLocationHistory([result, ...locationHistory]);
+            })
+        }
+    }, [selectedLocation])
+
     const handleChange = (text)=>{
         setSearchValue(text)
     }
@@ -31,6 +44,7 @@ const SearchPage = (props)=>{
     const handleSelect = (value) => {
         setSelectedLocation(value);
         setPossibleLocations([]);
+        setSearchValue("");
     }
 
     return(
@@ -46,7 +60,12 @@ const SearchPage = (props)=>{
                     {possibleLocations.map(location => <SearchOption handleSelect={handleSelect} location={location}/>)}
                 </SearchOptions>
             </Box>
-            {selectedLocation?.name}
+            <Box>
+                {
+                    locationHistory.length>0 && 
+                    <Location location={locationHistory[0]} loading={loadingLocation}/>
+                }
+            </Box>
         </Container>
     )
 }
