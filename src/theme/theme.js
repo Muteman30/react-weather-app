@@ -57,7 +57,7 @@ export const theme = createTheme({
                     h5: 'h2',
                     h6: 'h2',
                     subtitle: 'h2',
-                    body1: 'span',
+                    body1: 'p',
                     body2: 'span',
                 }
             }
