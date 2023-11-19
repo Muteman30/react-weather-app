@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const baseUrl = "https://api.openweathermap.org";
-const appKey = "38869eef0353be16d54a2e193d80c08f";
+const appKey = "";
 const units = "metric";
 
 export const getLocations = (value)=>{
